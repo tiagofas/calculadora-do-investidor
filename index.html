@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Investimentos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #0077cc;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #0077cc;
+      margin-bottom: 10px;
+    }
+    .calc {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+    }
+    label {
+      display: block;
+      margin: 8px 0 4px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #0077cc;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+    .resultado {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Calculadora de Investimentos</h1>
+    <p>Simule seus rendimentos de forma rápida e fácil!</p>
+  </header>
+
+  <main>
+    <!-- Juros Compostos -->
+    <div class="calc">
+      <h2>1. Juros Compostos</h2>
+      <label>Valor Inicial (R$):</label>
+      <input type="number" id="valorInicial">
+      <label>Taxa de Juros (% ao mês):</label>
+      <input type="number" id="taxaJuros">
+      <label>Tempo (meses):</label>
+      <input type="number" id="tempo">
+      <button onclick="calcularJurosCompostos()">Calcular</button>
+      <div class="resultado" id="resultadoJuros"></div>
+    </div>
+
+    <!-- Aportes Mensais -->
+    <div class="calc">
+      <h2>2. Aportes Mensais</h2>
+      <label>Aporte Mensal (R$):</label>
+      <input type="number" id="aporteMensal">
+      <label>Taxa de Juros (% ao mês):</label>
+      <input type="number" id="taxaAporte">
+      <label>Tempo (meses):</label>
+      <input type="number" id="tempoAporte">
+      <button onclick="calcularAportesMensais()">Calcular</button>
+      <div class="resultado" id="resultadoAporte"></div>
+    </div>
+
+    <!-- Objetivo Financeiro -->
+    <div class="calc">
+      <h2>3. Tempo para Atingir um Objetivo</h2>
+      <label>Valor Inicial (R$):</label>
+      <input type="number" id="valorInicialObj">
+      <label>Taxa de Juros (% ao mês):</label>
+      <input type="number" id="taxaObj">
+      <label>Objetivo (R$):</label>
+      <input type="number" id="objetivo">
+      <button onclick="calcularTempoObjetivo()">Calcular</button>
+      <div class="resultado" id="resultadoObjetivo"></div>
+    </div>
+  </main>
+
+  <script>
+    function calcularJurosCompostos() {
+      let valorInicial = parseFloat(document.getElementById("valorInicial").value);
+      let taxa = parseFloat(document.getElementById("taxaJuros").value) / 100;
+      let tempo = parseInt(document.getElementById("tempo").value);
+      let montante = valorInicial * Math.pow((1 + taxa), tempo);
+      document.getElementById("resultadoJuros").innerText = `Montante final: R$ ${montante.toFixed(2)}`;
+    }
+
+    function calcularAportesMensais() {
+      let aporte = parseFloat(document.getElementById("aporteMensal").value);
+      let taxa = parseFloat(document.getElementById("taxaAporte").value) / 100;
+      let tempo = parseInt(document.getElementById("tempoAporte").value);
+      let montante = aporte * ((Math.pow(1 + taxa, tempo) - 1) / taxa);
+      document.getElementById("resultadoAporte").innerText = `Montante acumulado: R$ ${montante.toFixed(2)}`;
+    }
+
+    function calcularTempoObjetivo() {
+      let valorInicial = parseFloat(document.getElementById("valorInicialObj").value);
+      let taxa = parseFloat(document.getElementById("taxaObj").value) / 100;
+      let objetivo = parseFloat(document.getElementById("objetivo").value);
+      if (valorInicial <= 0 || taxa <= 0 || objetivo <= valorInicial) {
+        document.getElementById("resultadoObjetivo").innerText = "Verifique os valores informados.";
+        return;
+      }
+      let tempo = Math.log(objetivo / valorInicial) / Math.log(1 + taxa);
+      document.getElementById("resultadoObjetivo").innerText = `Tempo necessário: ${Math.ceil(tempo)} meses`;
+    }
+  </script>
+</body>
+</html>
